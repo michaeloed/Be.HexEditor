@@ -3342,6 +3342,11 @@ namespace Be.Windows.Forms
 			}
 		}
 
+        public long CurrentBytePos
+        {
+            get { return _bytePos; }
+        }
+
 		/// <summary>
 		/// Gets and sets the number of bytes selected in the hex box.
 		/// </summary>

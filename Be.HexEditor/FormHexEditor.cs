@@ -418,8 +418,12 @@ namespace Be.HexEditor
 
         void Position_Changed(object sender, EventArgs e)
         {
-            this.toolStripStatusLabel.Text = string.Format("Ln {0}    Col {1}",
-                hexBox.CurrentLine, hexBox.CurrentPositionInLine);
+            //this.toolStripStatusLabel.Text = string.Format("Ln {0}    Col {1}",
+            //    hexBox.CurrentLine, hexBox.CurrentPositionInLine);
+
+            toolStripStatusLabel.Text = string.Format("Pos 0x{0:X} (Ln {1}  Col {2})",
+                hexBox.CurrentBytePos, hexBox.CurrentLine, hexBox.CurrentPositionInLine);
+            
 
 			string bitPresentation = string.Empty;
 
