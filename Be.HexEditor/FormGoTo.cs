@@ -11,17 +11,22 @@ namespace Be.HexEditor
 	/// </summary>
     public class FormGoTo : Core.FormEx
 	{
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label lblDec;
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.NumericUpDown nup;
 		private System.Windows.Forms.Label label2;
         private Panel line;
         private FlowLayoutPanel flowLayoutPanel1;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        private RadioButton rbHex;
+        private RadioButton rbDec;
+        private Label lblHex;
+        private TextBox txtHex;
+
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
 
 		public FormGoTo()
 		{
@@ -58,21 +63,25 @@ namespace Be.HexEditor
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGoTo));
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblDec = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
             this.nup = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.line = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.rbHex = new System.Windows.Forms.RadioButton();
+            this.rbDec = new System.Windows.Forms.RadioButton();
+            this.lblHex = new System.Windows.Forms.Label();
+            this.txtHex = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.nup)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // lblDec
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.lblDec, "lblDec");
+            this.lblDec.Name = "lblDec";
             // 
             // btnCancel
             // 
@@ -122,26 +131,58 @@ namespace Be.HexEditor
             this.flowLayoutPanel1.Controls.Add(this.btnOK);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
+            // rbHex
+            // 
+            resources.ApplyResources(this.rbHex, "rbHex");
+            this.rbHex.Checked = true;
+            this.rbHex.Name = "rbHex";
+            this.rbHex.TabStop = true;
+            this.rbHex.UseVisualStyleBackColor = true;
+            this.rbHex.Click += new System.EventHandler(this.rbDec_Click);
+            // 
+            // rbDec
+            // 
+            resources.ApplyResources(this.rbDec, "rbDec");
+            this.rbDec.Name = "rbDec";
+            this.rbDec.UseVisualStyleBackColor = true;
+            this.rbDec.Click += new System.EventHandler(this.rbDec_Click);
+            // 
+            // lblHex
+            // 
+            resources.ApplyResources(this.lblHex, "lblHex");
+            this.lblHex.Name = "lblHex";
+            // 
+            // txtHex
+            // 
+            resources.ApplyResources(this.txtHex, "txtHex");
+            this.txtHex.Name = "txtHex";
+            // 
             // FormGoTo
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.txtHex);
+            this.Controls.Add(this.lblHex);
+            this.Controls.Add(this.rbDec);
+            this.Controls.Add(this.rbHex);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.line);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.nup);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblDec);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormGoTo";
             this.ShowInTaskbar = false;
             this.Activated += new System.EventHandler(this.FormGoTo_Activated);
+            this.Shown += new System.EventHandler(this.FormGoTo_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.nup)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -158,7 +199,14 @@ namespace Be.HexEditor
 
 		public long GetByteIndex()
 		{
-			return Convert.ToInt64(nup.Value) - 1;
+            if (rbHex.Checked)
+            {
+                return Convert.ToInt64(txtHex.Text, 16);
+            }
+            else
+            {
+                return Convert.ToInt64(nup.Value) - 1;
+            }
 		}
 
 		private void FormGoTo_Activated(object sender, System.EventArgs e)
@@ -176,5 +224,27 @@ namespace Be.HexEditor
 		{
 			DialogResult = DialogResult.OK;
 		}
-	}
+
+        private void rbDec_Click(object sender, EventArgs e)
+        {
+            bool isHex = rbHex.Checked;
+
+            lblHex.Enabled = isHex;
+            txtHex.Enabled = isHex;
+            lblDec.Enabled = !isHex;
+            nup.Enabled = !isHex;
+        }
+
+        private void FormGoTo_Shown(object sender, EventArgs e)
+        {
+            if (rbHex.Checked)
+            {
+                txtHex.Focus();
+            }
+            else
+            {
+                nup.Focus();
+            }
+        }
+    }
 }
